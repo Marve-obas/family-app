@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bayshore Homecare Solutions</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #eef7fb;
+      color: #1f2933;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0077b6, #00b4d8);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+
+    nav {
+      background: #023e8a;
+      padding: 12px;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      margin: 12px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    section {
+      background: white;
+      margin: 25px;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+      color: #0077b6;
+    }
+
+    input, textarea, select {
+      width: 96%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      background: #0077b6;
+      color: white;
+      padding: 12px 18px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    button:hover {
+      background: #023e8a;
+    }
+
+    .card {
+      background: #f8fcff;
+      border-left: 6px solid #00b4d8;
+      padding: 15px;
+      margin-top: 15px;
+      border-radius: 8px;
+    }
+
+    .warning {
+      background: #fff3cd;
+      border-left: 6px solid #ffb703;
+    }
+
+    footer {
+      background: #023e8a;
+      color: white;
+      text-align: center;
+      padding: 15px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Bayshore Homecare Solutions</h1>
+  <p>Homecare tracking system for vulnerable adults</p>
+</header>
+
+<nav>
+  <a href="#signin">Staff Sign In/Out</a>
+  <a href="#clients">Client Records</a>
+  <a href="#notes">Progress Notes</a>
+  <a href="#contacts">Emergency Contacts</a>
+</nav>
+
+<section class="warning">
+  <h2>Privacy Notice</h2>
+  <p>
+    This system contains private healthcare information. Only authorized staff should access it.
+  </p>
+</section>
+
+<section id="signin">
+  <h2>Staff Sign In / Sign Out</h2>
+
+  <input id="staffName" placeholder="Staff Full Name">
+  <input id="staffRole" placeholder="Role: PSW, Nurse, Caregiver">
+  <input id="clientVisited" placeholder="Client Name">
+  <select id="shiftAction">
+    <option>Sign In</option>
+    <option>Sign Out</option>
+  </select>
+
+  <button onclick="addShift()">Submit</button>
+
+  <div id="shiftList"></div>
+</section>
+
+<section id="clients">
+  <h2>Client Information</h2>
+
+  <input id="clientName" placeholder="Client Full Name">
+  <input id="clientAge" type="number" placeholder="Age">
+  <input id="clientAddress" placeholder="Home Address">
+  <input id="diagnosis" placeholder="Diagnosis">
+  <input id="allergies" placeholder="Allergies">
+  <textarea id="carePlan" placeholder="Care Plan: medication reminder, bathing, feeding, mobility support, meal prep"></textarea>
+  <textarea id="riskInfo" placeholder="Risks: fall risk, dementia, diabetes, mobility issue"></textarea>
+
+  <button onclick="addClient()">Add Client</button>
+
+  <div id="clientList"></div>
+</section>
+
+<section id="notes">
+  <h2>Progress Notes</h2>
+
+  <input id="noteClient" placeholder="Client Name">
+  <input id="noteStaff" placeholder="Staff Name">
+  <textarea id="progressNote" placeholder="Write progress note here"></textarea>
+  <select id="clientMood">
+    <option>Stable</option>
+    <option>Happy</option>
+    <option>Confused</option>
+    <option>Agitated</option>
+    <option>Needs Follow Up</option>
+  </select>
+
+  <button onclick="addNote()">Add Progress Note</button>
+
+  <div id="noteList"></div>
+</section>
+
+<section id="contacts">
+  <h2>Emergency / Family Contacts</h2>
+
+  <input id="contactClient" placeholder="Client Name">
+  <input id="contactName" placeholder="Contact Person Name">
+  <input id="relationship" placeholder="Relationship: Daughter, Son, Doctor, POA">
+  <input id="phone" placeholder="Phone Number">
+  <input id="email" placeholder="Email Address">
+
+  <button onclick="addContact()">Add Contact</button>
+
+  <div id="contactList"></div>
+</section>
+
+<footer>
+  <p>Bayshore Homecare Solutions | Care, Safety, Dignity, and Respect</p>
+</footer>
+
+<script>
+  function currentTime() {
+    return new Date().toLocaleString();
+  }
+
+  function addShift() {
+    let staff = document.getElementById("staffName").value;
+    let role = document.getElementById("staffRole").value;
+    let client = document.getElementById("clientVisited").value;
+    let action = document.getElementById("shiftAction").value;
+
+    if (!staff || !role || !client) {
+      alert("Please fill all staff sign in/out fields");
+      return;
+    }
+
+    document.getElementById("shiftList").innerHTML += `
+      <div class="card">
+        <strong>${action}</strong><br>
+        Staff: ${staff}<br>
+        Role: ${role}<br>
+        Client: ${client}<br>
+        Time: ${currentTime()}
+      </div>
+    `;
+  }
+
+  function addClient() {
+    let name = document.getElementById("clientName").value;
+    let age = document.getElementById("clientAge").value;
+    let address = document.getElementById("clientAddress").value;
+    let diagnosis = document.getElementById("diagnosis").value;
+    let allergies = document.getElementById("allergies").value;
+    let carePlan = document.getElementById("carePlan").value;
+    let risks = document.getElementById("riskInfo").value;
+
+    if (!name || !age || !address) {
+      alert("Please enter client name, age, and address");
+      return;
+    }
+
+    document.getElementById("clientList").innerHTML += `
+      <div class="card">
+        <strong>${name}</strong><br>
+        Age: ${age}<br>
+        Address: ${address}<br>
+        Diagnosis: ${diagnosis}<br>
+        Allergies: ${allergies}<br>
+        Care Plan: ${carePlan}<br>
+        Risk Information: ${risks}
+      </div>
+    `;
+  }
+
+  function addNote() {
+    let client = document.getElementById("noteClient").value;
+    let staff = document.getElementById("noteStaff").value;
+    let note = document.getElementById("progressNote").value;
+    let mood = document.getElementById("clientMood").value;
+
+    if (!client || !staff || !note) {
+      alert("Please fill all progress note fields");
+      return;
+    }
+
+    document.getElementById("noteList").innerHTML += `
+      <div class="card">
+        <strong>Progress Note</strong><br>
+        Client: ${client}<br>
+        Staff: ${staff}<br>
+        Condition/Mood: ${mood}<br>
+        Note: ${note}<br>
+        Date: ${currentTime()}
+      </div>
+    `;
+  }
+
+  function addContact() {
+    let client = document.getElementById("contactClient").value;
+    let name = document.getElementById("contactName").value;
+    let relationship = document.getElementById("relationship").value;
+    let phone = document.getElementById("phone").value;
+    let email = document.getElementById("email").value;
+
+    if (!client || !name || !phone) {
+      alert("Please enter client, contact name, and phone number");
+      return;
+    }
+
+    document.getElementById("contactList").innerHTML += `
+      <div class="card">
+        <strong>${name}</strong><br>
+        Client: ${client}<br>
+        Relationship: ${relationship}<br>
+        Phone: ${phone}<br>
+        Email: ${email}
+      </div>
+    `;
+  }
+</script>
+
+</body>
+</html>

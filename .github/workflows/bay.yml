@@ -6,7 +6,7 @@ on:
 
 jobs:
   build-push:
-    runs-on: s12
+    runs-on: kunballi
 
     steps:
       - name: Checkout Source Code

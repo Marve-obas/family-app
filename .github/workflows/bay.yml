@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - name: Checkout Source Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Fix Docker Socket Permission
         run: |
@@ -21,7 +21,7 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/bayshore-app:s12 .
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/bayshore-app:kunballi .
 
       - name: Verify Image
         run: docker images
@@ -35,7 +35,7 @@ jobs:
           docker run -d \
             --name s12-ci-cd \
             -p 8080:80 \
-            ${{ secrets.DOCKERHUB_USERNAME }}/bayshore-app:s12
+            ${{ secrets.DOCKERHUB_USERNAME }}/bayshore-app:kunballi
 
       - name: Verify Running Container
         run: docker ps
@@ -46,4 +46,4 @@ jobs:
 
       - name: Push Image to Docker Hub
         run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/bayshore-app:s12
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/bayshore-app:kunballi

@@ -1,0 +1,49 @@
+name: Docker Build and Push
+
+on:
+  push:
+    branches: [ family-branch ]
+
+jobs:
+  build-push:
+    runs-on: s12
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Fix Docker Socket Permission
+        run: |
+          sudo chmod 666 /var/run/docker.sock
+
+      - name: Verify Docker Installation
+        run: docker --version
+
+      - name: Build Docker Image
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/bayshore-app:s12 .
+
+      - name: Verify Image
+        run: docker images
+
+      - name: Remove Existing Container
+        run: |
+          docker rm -f s12-ci-cd || true
+
+      - name: Run Container
+        run: |
+          docker run -d \
+            --name s12-ci-cd \
+            -p 8080:80 \
+            ${{ secrets.DOCKERHUB_USERNAME }}/bayshore-app:s12
+
+      - name: Verify Running Container
+        run: docker ps
+
+      - name: Login to Docker Hub
+        run: |
+          echo "${{ secrets.ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      - name: Push Image to Docker Hub
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/bayshore-app:s12

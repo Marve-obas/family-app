@@ -12,10 +12,6 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v5
 
-      - name: Fix Docker Socket Permission
-        run: |
-          sudo chmod 666 /var/run/docker.sock
-
       - name: Verify Docker Installation
         run: docker --version
 
